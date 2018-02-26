@@ -1,37 +1,14 @@
-from requests import get
-from requests.exceptions import RequestException
-from contextlib import closing
-from bs4 import BeautifulSoup
-import datetime
-import pickle
-def simple_get(url):
-    try:
-        with closing(get(url, stream = True)) as resp:
-            if is_good_response(resp):
-                return resp.content
-            else:
-                return None
-    except RequestException as e:
-        log_error('Error during request to {0} : {1}'.format(url, str(e)))
-        return None
-
-def is_good_response(resp):
-    content_type = resp.headers['Content-Type'].lower()
-    return(resp.status_code == 200
-           and content_type is not None
-           and content_type.find('html') > -1)
-
-def log_error(e):
-    print(e)
-
-
+import nltk
+from nltk.corpus import words
 def main():
-    raw_html = simple_get('http://www.newyorksocialdiary.com/party-pictures')
-    print(raw_html)
-
+    elist = list()
+    x =  "and John and Molly Garone"
+    namelist = x.split()
+    # and John and Molly Garone
+    if len(namelist) == 5 and (namelist[0] == "and" or namelist[0] == "AND"):
+        elist.append(namelist[1] + " " + namelist[4])
+        elist.append(namelist[3] + " " + namelist[4])
+    print(elist)
 
 if __name__ == "__main__":
     main()
-
-#parties before December 1st, 2014
-#31 pages
